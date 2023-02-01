@@ -24,6 +24,8 @@ enum custom_keycodes {
   TOP_RIGHT,
   BOTTOM_LEFT,
   BOTTOM_RIGHT,
+  TOP_HALF,
+  BOTTOM_HALF,
   TOP_LEFT_SIXTH,
   TOP_CENTRE_SIXTH,
   TOP_RIGHT_SIXTH,
@@ -42,8 +44,10 @@ enum custom_keycodes {
 
 enum combos { 
   TOP_LEFT_SIXTH_TOP_CENTRE_SIXTH_TOP_LEFT,
+  TOP_LEFT_SIXTH_TOP_RIGHT_SIXTH_TOP_HALF,
   TOP_CENTRE_SIXTH_TOP_RIGHT_SIXTH_TOP_RIGHT,
   BOTTOM_LEFT_SIXTH_BOTTOM_CENTRE_SIXTH_BOTTOM_LEFT,
+  BOTTOM_LEFT_SIXTH_BOTTOM_RIGHT_SIXTH_BOTTOM_HALF,
   BOTTOM_CENTRE_SIXTH_BOTTOM_RIGHT_SIXTH_BOTTOM_RIGHT,
   TOP_LEFT_SIXTH_BOTTOM_LEFT_SIXTH_LEFT_THIRD,
   TOP_CENTRE_SIXTH_BOTTOM_CENTRE_SIXTH_CENTRE_THIRD,
@@ -52,7 +56,9 @@ enum combos {
 };
 
 const uint16_t PROGMEM top_left_sixth_top_centre_sixth_top_left[] = { TOP_LEFT_SIXTH, TOP_CENTRE_SIXTH, COMBO_END};
+const uint16_t PROGMEM top_left_sixth_top_right_sixth_top_half[] = { TOP_LEFT_SIXTH, TOP_RIGHT_SIXTH, COMBO_END};
 const uint16_t PROGMEM top_centre_sixth_top_right_sixth_top_right[] = { TOP_CENTRE_SIXTH, TOP_RIGHT_SIXTH, COMBO_END};
+const uint16_t PROGMEM bottom_left_sixth_bottom_right_sixth_bottom_half[] = { BOTTOM_LEFT_SIXTH, BOTTOM_RIGHT_SIXTH, COMBO_END};
 const uint16_t PROGMEM bottom_left_sixth_bottom_centre_sixth_bottom_left[] = { BOTTOM_LEFT_SIXTH, BOTTOM_CENTRE_SIXTH, COMBO_END};
 const uint16_t PROGMEM bottom_centre_sixth_bottom_right_sixth_bottom_right[] = { BOTTOM_CENTRE_SIXTH, BOTTOM_RIGHT_SIXTH, COMBO_END};
 const uint16_t PROGMEM top_left_sixth_bottom_left_sixth_left_third[] = { TOP_LEFT_SIXTH, BOTTOM_LEFT_SIXTH, COMBO_END};
@@ -86,6 +92,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             // Left ctrl, left alt, k
             SEND_STRING(SS_LCTL(SS_LALT("k")));
+         } else {
+        }
+        break;
+    case TOP_HALF:
+        if (record->event.pressed) {
+            // Left ctrl, left alt, k
+            SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_UP))));
+         } else {
+        }
+        break;
+    case BOTTOM_HALF:
+        if (record->event.pressed) {
+            // Left ctrl, left alt, k
+            SEND_STRING(SS_LCTL(SS_LALT(SS_TAP(X_DOWN))));
          } else {
         }
         break;
@@ -193,6 +213,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 combo_t key_combos[COMBO_COUNT] = {
   [TOP_LEFT_SIXTH_TOP_CENTRE_SIXTH_TOP_LEFT] = COMBO(top_left_sixth_top_centre_sixth_top_left, TOP_LEFT),
+  [TOP_LEFT_SIXTH_TOP_RIGHT_SIXTH_TOP_HALF] = COMBO(top_left_sixth_top_right_sixth_top_half, TOP_HALF),
+  [BOTTOM_LEFT_SIXTH_BOTTOM_RIGHT_SIXTH_BOTTOM_HALF] = COMBO(bottom_left_sixth_bottom_right_sixth_bottom_half, BOTTOM_HALF),
   [TOP_CENTRE_SIXTH_TOP_RIGHT_SIXTH_TOP_RIGHT] = COMBO(top_centre_sixth_top_right_sixth_top_right, TOP_RIGHT),
   [BOTTOM_LEFT_SIXTH_BOTTOM_CENTRE_SIXTH_BOTTOM_LEFT] = COMBO(bottom_left_sixth_bottom_centre_sixth_bottom_left, BOTTOM_LEFT),
   [BOTTOM_CENTRE_SIXTH_BOTTOM_RIGHT_SIXTH_BOTTOM_RIGHT] = COMBO(bottom_centre_sixth_bottom_right_sixth_bottom_right, BOTTOM_RIGHT),
@@ -205,18 +227,18 @@ combo_t key_combos[COMBO_COUNT] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    [_BASE_MAC] = LAYOUT(
-        DF(_WINDOWS),              RGB_TOG,                KC_NO,                KC_SCROLL_LOCK,     KC_PAUSE,
+        DF(_WINDOWS),       RGB_TOG,              KC_NO,                KC_SCROLL_LOCK,     KC_PAUSE,
         KC_NO,              KC_NO,                KC_NO,                KC_KB_VOLUME_DOWN,  KC_KB_VOLUME_UP,
         CENTRE,             PREVIOUS_DISPLAY,     NEXT_DISPLAY,         KC_PENT,            RGB_MOD,
         TOP_LEFT_SIXTH,     TOP_CENTRE_SIXTH,     TOP_RIGHT_SIXTH,      KC_NO,              KC_NO,
         BOTTOM_LEFT_SIXTH,  BOTTOM_CENTRE_SIXTH,  BOTTOM_RIGHT_SIXTH,   KC_NO,              MUTE_ZOOM
     ),
     [_WINDOWS] = LAYOUT(
-        DF(_BASE_MAC),            KC_NO,                KC_NO,                KC_NO,     RGB_TOG,
-        KC_NO,            KC_NO,                KC_NO,                KC_NO,  KC_NO,
-        KC_NO,             KC_NO,       KC_NO,           KC_PENT,            KC_NO,
-        KC_NO,     KC_NO,       KC_NO,        KC_NO,            KC_NO,
-        KC_NO,  KC_NO,    KC_NO,     KC_NO,            MUTE_ZOOM
+        DF(_BASE_MAC),      KC_NO,                KC_NO,                  KC_NO,              RGB_TOG,
+        KC_NO,              KC_NO,                KC_NO,                  KC_NO,              KC_NO,
+        KC_NO,              KC_NO,                KC_NO,                  KC_PENT,            KC_NO,
+        KC_NO,              KC_NO,                KC_NO,                  KC_NO,              KC_NO,
+        KC_NO,              KC_NO,                KC_NO,                  KC_NO,              MUTE_ZOOM
     ),
 };
 

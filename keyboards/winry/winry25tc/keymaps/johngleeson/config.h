@@ -1,2 +1,2 @@
-#define COMBO_COUNT 7
+#define COMBO_COUNT 9
 #define RGBLIGHT_LAYERS
